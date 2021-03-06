@@ -1,6 +1,6 @@
 # ascii-table
 
-A simple C++14 library to create text-based tables. Supports rows made of `std::string` as well as an interface to create your own row types.
+A simple C++ 14 library to create text-based tables. Supports rows made of `std::string` as well as an interface to create your own row types.
 
 # Basics
 
@@ -33,6 +33,12 @@ Creates this table:
 | Benjamin Smithson    |     Stephen Smithson | Robert Smithson |
 +----------------------+----------------------+-----------------+
 ```
+
+# Linking and Compilation
+
+The `CMakeLists.txt` here [tests/CMakeLists.txt](https://github.com/bclehmann/ascii-table/blob/master/tests/CMakeLists.txt) should help anyone trying to link this with their own project.
+
+This library was compiled with GCC with the C++ 14 standard, however it should build on any compiler with C++ 14 support. Compilation was done with this CMake file [src/CMakeLists.txt](https://github.com/bclehmann/ascii-table/blob/master/src/CMakeLists.txt)
 
 # Creating your own row class
 
