@@ -1,8 +1,7 @@
 
+#include "Table.h"
 #include <sstream>
 #include <iomanip>
-#include "table.h"
-
 
 std::stringstream get_header_rule(std::vector<size_t> widths) {
 	std::stringstream stream;
@@ -28,24 +27,24 @@ std::string fill_string(char c, size_t n) {
 }
 
 namespace ascii_table {
-	table::table(std::vector<column_info> colspec)
+	Table::Table(std::vector<ColumnInfo> colspec)
 			: colspec(colspec) {
 
 	}
 
-	void table::set_column_info(std::vector<column_info> colspec) {
+	void Table::set_column_info(std::vector<ColumnInfo> colspec) {
 		this->colspec = colspec;
 	}
 
-	void table::set_rows(std::vector<string_row> rows) {
+	void Table::set_rows(std::vector<StringRow> rows) {
 		this->rows = rows;
 	}
 
-	void table::add_row(string_row row) {
+	void Table::add_row(StringRow row) {
 		this->rows.push_back(row);
 	}
 
-	std::vector<size_t> table::get_true_column_widths() {
+	std::vector<size_t> Table::get_true_column_widths() {
 		std::vector<size_t> widths;
 		for (int i = 0; i < colspec.size(); i++) {
 			size_t max_row_width = 0;
@@ -60,7 +59,7 @@ namespace ascii_table {
 	}
 
 
-	std::stringstream table::get_table_stream() {
+	std::stringstream Table::get_table_stream() {
 		std::stringstream stream;
 		stream << std::left;
 
@@ -110,7 +109,7 @@ namespace ascii_table {
 		return stream;
 	}
 
-	std::string table::get_table() {
+	std::string Table::get_table() {
 		return get_table_stream().str();
 	}
 }

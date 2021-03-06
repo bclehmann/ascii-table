@@ -11,9 +11,9 @@ namespace ascii_table {
 		center
 	};
 
-	struct column_info {
+	struct ColumnInfo {
 	public:
-		column_info(size_t width, alignment align = alignment::left, size_t padding = 1)
+		ColumnInfo(size_t width, alignment align = alignment::left, size_t padding = 1)
 		: width(width)
 		, align(align)
 		, padding(padding)
