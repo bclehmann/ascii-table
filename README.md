@@ -42,7 +42,7 @@ This library was compiled with GCC with the C++ 14 standard, however it should b
 
 # Creating your own row class
 
-Here is the code for `StringRow`, note it is just a resource handler for `StringRowBase`. This is necessary because `std::vector` cannot hold abstract types, only pointers to them.
+Here is the code for `StringRow`, note it is just a resource handle for `StringRowBase`. This is necessary because `std::vector` cannot hold abstract types, only pointers to them.
 
 ```cpp
 class StringRow : public Row {
