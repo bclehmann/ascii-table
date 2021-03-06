@@ -13,7 +13,7 @@ namespace ascii_table {
 
 	struct ColumnInfo {
 	public:
-		ColumnInfo(size_t width, alignment align = alignment::left, size_t padding = 1)
+		explicit ColumnInfo(size_t width, alignment align = alignment::left, size_t padding = 1)
 		: width(width)
 		, align(align)
 		, padding(padding)

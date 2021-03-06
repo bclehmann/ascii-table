@@ -36,11 +36,11 @@ namespace ascii_table {
 		this->colspec = colspec;
 	}
 
-	void Table::set_rows(std::vector<StringRow> rows) {
+	void Table::set_rows(std::vector<Row> rows) {
 		this->rows = rows;
 	}
 
-	void Table::add_row(StringRow row) {
+	void Table::add_row(Row row) {
 		this->rows.push_back(row);
 	}
 
@@ -49,7 +49,7 @@ namespace ascii_table {
 		for (int i = 0; i < colspec.size(); i++) {
 			size_t max_row_width = 0;
 			for (int j = 0; j < rows.size(); j++) {
-				max_row_width = std::max(max_row_width, rows[j].items[i].size());
+				max_row_width = std::max(max_row_width, rows[j][i].size());
 			}
 
 			widths.push_back(std::max(colspec[i].width, max_row_width) + 2 * colspec[i].padding);
@@ -69,7 +69,7 @@ namespace ascii_table {
 		stream << header_rule << '\n';
 		stream << header_rule << '\n';
 
-		for (auto &row : rows) {
+		for (auto &curr_row : rows) {
 			for (int i = 0; i < colspec.size(); i++) {
 				stream << '|';
 				std::string padding;
@@ -79,11 +79,11 @@ namespace ascii_table {
 
 				switch (colspec[i].align) {
 					case alignment::center: {
-						int space = true_widths[i] - row.items[i].size();
-						int offset = space / 2;
+						size_t space = true_widths[i] - curr_row[i].size();
+						size_t offset = space / 2;
 						std::string offset_str = fill_string(' ', offset);
 
-						stream << offset_str << row.items[i] << offset_str;
+						stream << offset_str << curr_row[i] << offset_str;
 
 						if (offset * 2 < space) {
 							stream << ' ';
@@ -92,11 +92,11 @@ namespace ascii_table {
 					}
 					case alignment::left:
 						stream << std::left;
-						stream << padding << std::setw(true_widths[i] - colspec[i].padding) << row.items[i];
+						stream << padding << std::setw(true_widths[i] - colspec[i].padding) << curr_row[i];
 						break;
 					case alignment::right:
 						stream << std::right;
-						stream << std::setw(true_widths[i] - colspec[i].padding) << row.items[i] << padding;
+						stream << std::setw(true_widths[i] - colspec[i].padding) << curr_row[i] << padding;
 						break;
 				}
 
