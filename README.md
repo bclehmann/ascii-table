@@ -46,8 +46,7 @@ This library was compiled with GCC with the C++ 14 standard, however it should b
 
 # Creating your own row class
 
-Here is the code for `StringRow`, note it is just a resource handle for `StringRowBase` which sets `handle` to be a `std::shared_ptr` to a `StringRowBase`. `handle` is a protected field that the base class `Row` uses internally. This is necessary because `std::vector` cannot hold abstract types, only pointers to them. `StringRowBase` also adds a constructor for initializing the `items` field of `StringRowBase`, but this a convenience not a necessity.
-
+Here is the code for `StringRow`, note it is just a resource handle for `StringRowBase` which sets `handle` to an `std::shared_ptr<StringRowBase>`.
 ```cpp
 class StringRow : public Row {
 public:
@@ -63,7 +62,10 @@ public:
 };
 ```
 
-`StringRowBase`:
+`handle` is a protected field that the base class `Row` uses internally. This is necessary because `std::vector` cannot hold abstract types, only pointers to them (or concrete wrapper classes). `StringRowBase` also adds a constructor for initializing the `items` field of `StringRowBase`, but this a convenience not a necessity.
+
+
+If one looks at `StringRowBase` it's pretty compact:
 
 ```cpp
 class StringRowBase : public RowBase {
