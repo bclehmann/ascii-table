@@ -46,7 +46,7 @@ This library was compiled with GCC with the C++ 14 standard, however it should b
 
 # Creating your own row class
 
-Here is the code for `StringRow`, note it is just a resource handle for `StringRowBase`. This is necessary because `std::vector` cannot hold abstract types, only pointers to them.
+Here is the code for `StringRow`, note it is just a resource handle for `StringRowBase` which sets `handle` to be a `std::shared_ptr` to a `StringRowBase`. `handle` is a protected field that the base class `Row` uses internally. This is necessary because `std::vector` cannot hold abstract types, only pointers to them. `StringRowBase` also adds a constructor for initializing the `items` field of `StringRowBase`, but this a convenience not a necessity.
 
 ```cpp
 class StringRow : public Row {
@@ -70,15 +70,18 @@ class StringRowBase : public RowBase {
 public:
 	StringRowBase() = default;
 	explicit StringRowBase(std::vector<std::string> items)
-	: items(items)
+	: items(std::move(items))
 	{
 
 	}
 	std::string get_item(int i) override{
 		return items[i];
 	}
+	size_t size() override{
+		return items.size();
+	}
 	std::vector<std::string> items;
 };
 ```
 
-As you can see, this class merely provides a method to provide the string output of a column.
+As you can see, this class merely provides a method `get_item` to provide the string output of a column and `size()` to provide the number of items in the row.
