@@ -3,10 +3,6 @@
 #include <sstream>
 #include <iomanip>
 
-
-
-
-
 std::string fill_string(char c, size_t n) {
 	std::string s;
 	for (int i = 0; i < n; i++)
