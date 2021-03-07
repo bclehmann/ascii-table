@@ -3,20 +3,9 @@
 #include <sstream>
 #include <iomanip>
 
-std::stringstream get_header_rule(std::vector<size_t> widths) {
-	std::stringstream stream;
 
-	for (int i = 0; i < widths.size(); i++) {
-		stream << '+';
-		for (int j = 0; j < widths[i]; j++) {
-			stream << '-';
-		}
-	}
 
-	stream << '+';
 
-	return stream;
-}
 
 std::string fill_string(char c, size_t n) {
 	std::string s;
@@ -27,6 +16,64 @@ std::string fill_string(char c, size_t n) {
 }
 
 namespace ascii_table {
+	std::stringstream Table::get_row_stream(Row& row, std::string header_rule, std::vector<size_t> true_widths, bool is_header) {
+		std::stringstream stream;
+
+		for (int i = 0; i < colspec.size(); i++) {
+			stream << '|';
+			std::string padding;
+			for (int j = 0; j < colspec[i].padding; j++) {
+				padding += ' ';
+			}
+
+			alignment align = is_header ? alignment::left : colspec[i].align;
+
+			switch (align) {
+				case alignment::center: {
+					size_t space = true_widths[i] - row[i].size();
+					size_t offset = space / 2;
+					std::string offset_str = fill_string(' ', offset);
+
+					stream << offset_str << row[i] << offset_str;
+
+					if (offset * 2 < space) {
+						stream << ' ';
+					}
+					break;
+				}
+				case alignment::left:
+					stream << std::left;
+					stream << padding << std::setw(true_widths[i] - colspec[i].padding) << row[i];
+					break;
+				case alignment::right:
+					stream << std::right;
+					stream << std::setw(true_widths[i] - colspec[i].padding) << row[i] << padding;
+					break;
+			}
+
+			stream << std::left;
+		}
+		stream << "|\n";
+		stream << header_rule << '\n';
+
+		return stream;
+	}
+
+	std::stringstream Table::get_header_rule(std::vector<size_t> widths) {
+		std::stringstream stream;
+
+		for (int i = 0; i < widths.size(); i++) {
+			stream << '+';
+			for (int j = 0; j < widths[i]; j++) {
+				stream << '-';
+			}
+		}
+
+		stream << '+';
+
+		return stream;
+	}
+
 	Table::Table(std::vector<ColumnInfo> colspec)
 			: colspec(colspec) {
 
@@ -66,44 +113,19 @@ namespace ascii_table {
 		std::vector<size_t> true_widths = get_true_column_widths();
 		std::string header_rule = get_header_rule(true_widths).str();
 
+		auto iter = rows.begin();
+
 		stream << header_rule << '\n';
+
+		if(has_header){
+			stream << get_row_stream(*iter, header_rule, true_widths, true).str(); // For some reason you cannot append stringstreams to eachother
+			iter++;
+		}
+
 		stream << header_rule << '\n';
 
-		for (auto &curr_row : rows) {
-			for (int i = 0; i < colspec.size(); i++) {
-				stream << '|';
-				std::string padding;
-				for (int j = 0; j < colspec[i].padding; j++) {
-					padding += ' ';
-				}
-
-				switch (colspec[i].align) {
-					case alignment::center: {
-						size_t space = true_widths[i] - curr_row[i].size();
-						size_t offset = space / 2;
-						std::string offset_str = fill_string(' ', offset);
-
-						stream << offset_str << curr_row[i] << offset_str;
-
-						if (offset * 2 < space) {
-							stream << ' ';
-						}
-						break;
-					}
-					case alignment::left:
-						stream << std::left;
-						stream << padding << std::setw(true_widths[i] - colspec[i].padding) << curr_row[i];
-						break;
-					case alignment::right:
-						stream << std::right;
-						stream << std::setw(true_widths[i] - colspec[i].padding) << curr_row[i] << padding;
-						break;
-				}
-
-				stream << std::left;
-			}
-			stream << "|\n";
-			stream << header_rule << '\n';
+		for (; iter != rows.end(); iter++) {
+			stream << get_row_stream(*iter, header_rule, true_widths).str();
 		}
 
 		return stream;
@@ -112,4 +134,8 @@ namespace ascii_table {
 	std::string Table::get_table() {
 		return get_table_stream().str();
 	}
+
+
+
+
 }

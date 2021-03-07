@@ -9,6 +9,8 @@ int main(int argc, char* argv[]){
 	std::vector<ascii_table::ColumnInfo> colspec = {col1, col2, col3};
 
 	ascii_table::Table table(colspec);
+	table.first_row_header(true);
+	table.add_row(ascii_table::StringRow({"Column 1", "Column 2", "Column 3"}));
 	table.add_row(ascii_table::StringRow({"Ben", "Steve", "Bob"}));
 	table.add_row(ascii_table::StringRow({"Benjamin", "Stephen", "Robert"}));
 	table.add_row(ascii_table::StringRow({"Benjamin Smith", "Stephen Smith", "Robert Smith"}));

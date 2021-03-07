@@ -17,9 +17,15 @@ namespace ascii_table {
 		std::stringstream get_table_stream();
 		std::string get_table();
 		std::vector<size_t> get_true_column_widths();
+		void first_row_header(bool enable){
+			has_header = enable;
+		}
 	private:
+		std::stringstream get_row_stream(Row& row, std::string header_rule, std::vector<size_t> true_widths, bool is_header = false);
+		std::stringstream get_header_rule(std::vector<size_t> widths);
 		std::vector<ColumnInfo> colspec;
 		std::vector<Row> rows;
+		bool has_header = false;
 	 };
 
 }
