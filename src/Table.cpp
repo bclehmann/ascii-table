@@ -15,7 +15,9 @@ namespace ascii_table {
 	std::stringstream Table::get_row_stream(Row& row, std::string header_rule, std::vector<size_t> true_widths, bool is_header) {
 		std::stringstream stream;
 
-		if(row)
+		if(row.size() != colspec.size()){
+			throw std::length_error("A row's length did not match colspec length.");
+		}
 
 		for (int i = 0; i < colspec.size(); i++) {
 			stream << '|';
@@ -94,6 +96,10 @@ namespace ascii_table {
 		for (int i = 0; i < colspec.size(); i++) {
 			size_t max_row_width = 0;
 			for (int j = 0; j < rows.size(); j++) {
+				if(rows[j].size() != colspec.size()){
+					throw std::length_error("row[" + std::to_string(j) + "] length did not match colspec length.");
+				}
+
 				max_row_width = std::max(max_row_width, rows[j][i].size());
 			}
 
