@@ -15,6 +15,8 @@ namespace ascii_table {
 	std::stringstream Table::get_row_stream(Row& row, std::string header_rule, std::vector<size_t> true_widths, bool is_header) {
 		std::stringstream stream;
 
+		if(row)
+
 		for (int i = 0; i < colspec.size(); i++) {
 			stream << '|';
 			std::string padding;

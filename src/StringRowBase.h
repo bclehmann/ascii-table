@@ -19,6 +19,9 @@ namespace ascii_table{
 		std::string get_item(int i) override{
 			return items[i];
 		}
+		size_t size() override{
+			return items.size();
+		}
 		std::vector<std::string> items;
 	};
 }

@@ -21,6 +21,10 @@ namespace ascii_table {
 			return handle->get_item(i);
 		}
 
+		size_t size(){
+			return handle->size();
+		}
+
 	protected:
 		 std::shared_ptr<RowBase> handle;
 	};
