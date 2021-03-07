@@ -11,6 +11,8 @@ ascii_table::ColumnInfo col3(0, ascii_table::alignment::center);
 std::vector<ascii_table::ColumnInfo> colspec = {col1, col2, col3};
 
 ascii_table::Table table(colspec);
+table.first_row_header(true); // Turns on table header
+table.add_row(ascii_table::StringRow({"Column 1", "Column 2", "Column 3"}));
 table.add_row(ascii_table::StringRow({"Ben", "Steve", "Bob"}));
 table.add_row(ascii_table::StringRow({"Benjamin", "Stephen", "Robert"}));
 table.add_row(ascii_table::StringRow({"Benjamin Smith", "Stephen Smith", "Robert Smith"}));
@@ -22,6 +24,8 @@ std::cout << table.get_table();
 Creates this table:
 
 ```
++----------------------+----------------------+-----------------+
+| Column 1             | Column 2             | Column 3        |
 +----------------------+----------------------+-----------------+
 +----------------------+----------------------+-----------------+
 | Ben                  |                Steve |       Bob       |
